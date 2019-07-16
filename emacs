@@ -1,4 +1,5 @@
 (setq inhibit-splash-screen t)
+(setq frame-background-mode "dark")
 
 (global-set-key (kbd "C-z") 'undo)
 ;(setq select-enable-primary t)
