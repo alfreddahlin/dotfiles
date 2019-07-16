@@ -58,8 +58,16 @@ fi
 
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+# custom shell prompt
+    DEFAULT=$PS1
+    PS1="\A \[\033[1;33m\]\u\[\033[0m\]@\[\033[1;32m\]\h\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\]\$ "
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+
+# custom shell prompt
+    DEFAULT=$PS1
+    PS1="\A \u@\h:\w\$ "
 fi
 unset color_prompt force_color_prompt
 
@@ -73,8 +81,7 @@ xterm*|rxvt*)
 esac
 
 # custom shell prompt
-    DEFAULT=$PS1
-    PS1="\A \[\033[1;33m\]\u\[\033[0m\]@\[\033[1;32m\]\h\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\]\$ "
+# Defined within color logic
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
