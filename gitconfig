@@ -1,3 +1,5 @@
 [user]
 	email = daahlin@hotmail.com
 	name = Alfred Dahlin
+[alias]
+	dog = log --all --decorate --oneline --graph

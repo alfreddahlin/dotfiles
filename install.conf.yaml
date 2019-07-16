@@ -2,12 +2,19 @@
     link:
         create: true
         relink: true
+#        force: true
 
 - clean: ['~']
 
 - link:
-    ~/.dotfiles: ''
+    ~/.dotfiles: ''#
+
+    ~/.profile:
+    ~/.bashrc:
+    ~/.bash_aliases:
+
 #    ~/.tmux.conf: tmux.conf
+
 
     ~/.emacs: emacs
 
