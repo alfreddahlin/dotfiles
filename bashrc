@@ -74,7 +74,7 @@ esac
 
 # custom shell prompt
 DEFAULT=$PS1
-PS1="\A \[\033[32m\]\u\[\033[0m\]:\033[34m\]\w\[\033[0m\]\$ "
+PS1="\A \[\033[32m\]\u\[\033[0m\]:\[\033[34m\]\w\[\033[0m\]\$ "
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
