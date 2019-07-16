@@ -7,11 +7,14 @@
 - clean: ['~']
 
 - link:
-    ~/.dotfiles: ''#
+    ~/.dotfiles: ''
 
     ~/.profile:
+        force: true
     ~/.bashrc:
+        force: true
     ~/.bash_aliases:
+        force: true
 
 #    ~/.tmux.conf: tmux.conf
 
