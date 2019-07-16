@@ -1,7 +1,10 @@
 (setq inhibit-splash-screen t)
-(setq frame-background-mode "dark")
+(setq frame-background-mode 'dark)
 
-(global-set-key (kbd "C-z") 'undo)
+(global-set-key (kbd "C-z")       'undo)
+(define-key global-map "\C-r"     'isearch-backward-regexp)
+(define-key global-map "\C-s"     'isearch-forward-regexp)
+(define-key global-map "\M-%"     'query-replace-regexp)
 ;(setq select-enable-primary t)
 ;(setq select-enable-clipboard nil)
 ;(setq mouse-drag-copy-region t)
