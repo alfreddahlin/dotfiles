@@ -45,7 +45,7 @@ export HISTTIMEFORMAT="%F %T: "
 
 # append to the history file, don't overwrite it
 
- shopt -s histappend
+shopt -s histappend
 
 
 

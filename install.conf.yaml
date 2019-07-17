@@ -20,6 +20,7 @@
 
 
     ~/.emacs: emacs
+    ~/.emacs.d/themes/zenburn-theme.el: zenburn-emacs/zenburn-theme.el
 
     ~/.gitconfig: gitconfig
 
