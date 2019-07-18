@@ -1,3 +1,10 @@
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (setq inhibit-splash-screen t)
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'zenburn t)
@@ -5,8 +12,7 @@
 ;; For it to work in terminal mode, dark mode had to be forced
 ;(setq frame-background-mode 'dark)
 
-
-;; For something?
+;; For starting emacs as a server
 (server-start)
 
 (global-set-key (kbd "C-z")       'undo)
@@ -93,7 +99,8 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("e2a42f0ee660f30851428ab328de50d0739adf08f732a5cb7a73b1395fee24a5" default))))
+    ("e2a42f0ee660f30851428ab328de50d0739adf08f732a5cb7a73b1395fee24a5" default)))
+ '(package-selected-packages (quote (flycheck))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

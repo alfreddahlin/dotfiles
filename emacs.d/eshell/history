@@ -1,0 +1,23 @@
+sdad
+ls
+cd ..
+cd ..
+asdls
+ls
+ll
+ls -alt
+ls -alt
+ls -alt
+cd
+pwd
+ls
+ls
+cd ..
+cd ../..
+cd dotfiles/
+edit emacs 
+cd projects/dotfiles/
+emacs emacs
+emacs -nw emacs
+ech $TERM
+echo $TERM

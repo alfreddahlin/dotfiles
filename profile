@@ -25,32 +25,30 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
-# Don't put duplicate lines in the history.
-
-export HISTCONTROL=ignoreboth
 
 
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
 
-# Save a lot of history
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=-1
+HISTFILESIZE=-1
+HISTTIMEFORMAT="%F %T: "
 
-export HISTSIZE=-1
+# for emacs visuals
+VISUAL=emacsclient
 
-export HISTFILESIZE=-1
-
-
-
-export HISTTIMEFORMAT="%F %T: "
-
-
+# setup default editor as emacs
+EDITOR=emacs
 
 # append to the history file, don't overwrite it
-
 shopt -s histappend
 
-
-
- # check the window size after each command and, if necessary,
-
- # update the values of LINES and COLUMNS.
-
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
 shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
