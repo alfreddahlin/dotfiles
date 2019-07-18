@@ -12,6 +12,9 @@
 ;; For it to work in terminal mode, dark mode had to be forced
 ;(setq frame-background-mode 'dark)
 
+;; Flyckeck to verify code syntax
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
 ;; For starting emacs as a server
 (server-start)
 
