@@ -1,10 +1,3 @@
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
 (setq inhibit-splash-screen t)
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'zenburn t)
@@ -33,20 +26,39 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-;; Define packages to use
+;; Define packages to use:
 
-; Ace jump mode to navigate in editor
+;; Ace jump mode to navigate in editor
 (use-package ace-jump-mode
-  :bind ("C-c SPC" . ace-jump-mode))
+  :bind ("C-c SPC" . ace-jump-mode)
+  :bind ("C-x SPC" . ace-jump-mode-pop-mark))
 
-; Flyckeck to verify code syntax
+; Enable mark pop between windows and frames
+(autoload
+  'ace-jump-mode-pop-mark
+  "ace-jump-mode"
+  "Ace jump back:-)"
+  t)
+(eval-after-load "ace-jump-mode"
+  '(ace-jump-mode-enable-mark-sync))
+;(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+
+;; Magit to incorporate and improve git-commands
+(use-package magit
+  :bind ("C-x g" . 'magit-status))
+
+;; Flyckeck to verify code syntax
 (use-package flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; Company to help with auto-completion
+(use-package company)
+(add-hook 'after-init-hook #'global-company-mode)
 
 ;; For starting emacs as a server
 ;(server-start)
 
-(global-set-key (kbd "C-z")       'undo)
+;(global-set-key (kbd "C-z")       'undo)
 (define-key global-map "\C-r"     'isearch-backward-regexp)
 (define-key global-map "\C-s"     'isearch-forward-regexp)
 (define-key global-map "\M-%"     'query-replace-regexp)
@@ -131,7 +143,7 @@
  '(custom-safe-themes
    (quote
     ("e2a42f0ee660f30851428ab328de50d0739adf08f732a5cb7a73b1395fee24a5" default)))
- '(package-selected-packages (quote (flycheck))))
+ '(package-selected-packages (quote (company flycheck))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
