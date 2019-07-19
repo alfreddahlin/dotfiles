@@ -37,11 +37,10 @@
 
 ; Ace jump mode to navigate in editor
 (use-package ace-jump-mode
-  :bind ("M-SPC" . ace-jump-mode))
+  :bind ("C-c SPC" . ace-jump-mode))
 
 ; Flyckeck to verify code syntax
-(use-package flycheck
-  :bind ("M-SPC" . ace-jump-mode))
+(use-package flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;; For starting emacs as a server

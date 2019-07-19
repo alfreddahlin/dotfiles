@@ -24,4 +24,4 @@
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
-    - [cp zenburn-emacs/zenburn-theme.el emacs.d/themes/zenburn-theme.el] # Ensures latest version of zenburn theme, taken from submodule
+#    - [cp zenburn-emacs/zenburn-theme.el emacs.d/themes/zenburn-theme.el] # Ensures latest version of zenburn theme, taken from submodule
