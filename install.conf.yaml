@@ -17,7 +17,8 @@
         force: true
 
     ~/.emacs: emacs
-    ~/.emacs.d: emacs.d
+#    ~/.emacs.d: emacs.d
+    ~/.emacs.d/themes/zenburn-theme.el: zenburn-emacs/zenburn-theme.el
 
     ~/.gitconfig: gitconfig
 

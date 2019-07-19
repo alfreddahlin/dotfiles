@@ -12,11 +12,40 @@
 ;; For it to work in terminal mode, dark mode had to be forced
 ;(setq frame-background-mode 'dark)
 
-;; Flyckeck to verify code syntax
+;; Set up link to package sources and initialize
+(require 'package)
+
+;; add melpa stable
+(add-to-list 'package-archives
+         '("melpa-stable" . "https://stable.melpa.org/packages/"))
+;; add melpa
+(add-to-list 'package-archives
+         '("melpa" . "http://melpa.milkbox.net/packages/"))
+
+;; Initialize packages
+(package-initialize)
+
+;; Install package installer use-package unless it is installed
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+;; Define packages to use
+
+; Ace jump mode to navigate in editor
+(use-package ace-jump-mode
+  :bind ("M-SPC" . ace-jump-mode))
+
+; Flyckeck to verify code syntax
+(use-package flycheck
+  :bind ("M-SPC" . ace-jump-mode))
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;; For starting emacs as a server
-(server-start)
+;(server-start)
 
 (global-set-key (kbd "C-z")       'undo)
 (define-key global-map "\C-r"     'isearch-backward-regexp)
