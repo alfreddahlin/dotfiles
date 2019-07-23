@@ -43,6 +43,14 @@
   '(ace-jump-mode-enable-mark-sync))
 ;(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 
+;; Multi-term to enable easy terminal handling
+(use-package multi-term
+  :bind ("C-c t" . 'multi-term-dedicated-toggle)
+  :bind ("C-c C-t" . 'multi-term))
+(setq multi-term-program "/bin/bash")
+(setq multi-term-dedicated-close-back-to-open-buffer-p t)
+(setq multi-term-dedicated-select-after-open-p t)
+
 ;; Magit to incorporate and improve git-commands
 (use-package magit
   :bind ("C-x g" . 'magit-status))
