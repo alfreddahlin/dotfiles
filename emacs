@@ -8,15 +8,22 @@
 ;; Set up link to package sources and initialize
 (require 'package)
 
-;; add melpa stable
-(add-to-list 'package-archives
-         '("melpa-stable" . "https://stable.melpa.org/packages/"))
-;; add melpa
-(add-to-list 'package-archives
-         '("melpa" . "http://melpa.milkbox.net/packages/"))
+;; Set package archives to include melpa
+(setq package-archives
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("melpa" . "https://melpa.org/packages/"))
+      tls-checktrust t
+      tls-program '("gnutls-cli --x509cafile %t -p %p %h")
+      gnutls-verify-error t)
+    
+;; Add additional package sources
+; (add-to-list 'package-archives
+;          '("NAME" . "URL"))
 
 ;; Initialize packages
 (package-initialize)
+; (package-refresh-contents)
 
 ;; Install package installer use-package unless it is installed
 (unless (package-installed-p 'use-package)
@@ -62,6 +69,91 @@
 ;; Company to help with auto-completion
 (use-package company)
 (add-hook 'after-init-hook #'global-company-mode)
+
+;; Load Go-specific language syntax
+;;For gocode use https://github.com/mdempsky/gocode
+; (use-package go-mode
+;   :init
+;   (setq gofmt-command "goimports"     ; use goimports instead of gofmt
+;         go-fontify-function-calls nil ; fontifing names of called
+;                                       ; functions is too much for me
+;         company-idle-delay nil)	; avoid auto completion popup, use TAB
+;                                 ; to show it
+;   :bind
+;   (:map go-mode-map
+;         ("C-c d" . lsp-describe-thing-at-point)
+;         ("C-c g" . godoc)
+;         ("C-c P" . my-godoc-package)
+;         ("{" . my-go-electric-brace)
+;         ("C-i" . company-indent-or-complete-common)
+;         ("C-M-i" . company-indent-or-complete-common)
+;    )
+;   :config
+;   (require 'go-guru)
+;   (add-hook 'go-mode-hook #'lsp)
+;   (add-hook 'go-mode-hook #'smartparens-mode)
+;   ;; run gofmt/goimports when saving the file
+;   (add-hook 'before-save-hook #'gofmt-before-save))
+
+(use-package go-mode)
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred))
+
+(add-hook 'go-mode-hook #'lsp-deferred)
+
+;; Provides fancier overlays
+(use-package lsp-ui
+  :commands lsp-ui-mode)
+
+;; Use company-mode for completion (otherwise, complete-at-point works out of the box):
+(use-package company-lsp
+  :commands company-lsp)
+
+; ;; Custom Compile Command
+; (defun go-mode-setup ()
+;   (linum-mode 1)
+;   (go-eldoc-setup)
+;   (setq gofmt-command "goimports")
+;   (add-hook 'before-save-hook 'gofmt-before-save)
+;   (local-set-key (kbd "M-.") 'godef-jump)
+;   (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
+;   (setq compilation-read-command nil)
+;   ;;  (define-key (current-local-map) "\C-c\C-c" 'compile)
+;   (local-set-key (kbd "M-,") 'compile))
+; (add-hook 'go-mode-hook 'go-mode-setup)
+
+; ;;Load auto-complete
+; (ac-config-default)
+; (require 'auto-complete-config)
+; (require 'go-autocomplete)
+
+; ;;Go rename
+
+; (require 'go-rename)
+
+; ;;Configure golint
+; (add-to-list 'load-path (concat (getenv "GOPATH")  "/src/github.com/golang/lint/misc/emacs"))
+; (require 'golint)
+
+; ;;Smaller compilation buffer
+; (setq compilation-window-height 14)
+; (defun my-compilation-hook ()
+;   (when (not (get-buffer-window "*compilation*"))
+;     (save-selected-window
+;       (save-excursion
+;         (let* ((w (split-window-vertically))
+;                (h (window-height w)))
+;           (select-window w)
+;           (switch-to-buffer "*compilation*")
+;           (shrink-window (- h compilation-window-height)))))))
+; (add-hook 'compilation-mode-hook 'my-compilation-hook)
+
+; ;;Other Key bindings
+; (global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region)
+
+; ;;Compilation autoscroll
+; (setq compilation-scroll-output t)
 
 ;; For starting emacs as a server
 ;(server-start)
@@ -133,7 +225,7 @@
   (insert "[]")
   (backward-char)
 )
-;(global-set-key "\M-[" 'insert-balanced-brackets)
+(global-set-key "\M-[" 'insert-balanced-brackets)
 
 (defun insert-balanced-quotes()
   (interactive)
@@ -151,7 +243,7 @@
  '(custom-safe-themes
    (quote
     ("e2a42f0ee660f30851428ab328de50d0739adf08f732a5cb7a73b1395fee24a5" default)))
- '(package-selected-packages (quote (company flycheck))))
+ '(package-selected-packages (quote (spinner company flycheck))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
