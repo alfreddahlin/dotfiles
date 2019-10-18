@@ -26,9 +26,10 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-# set PATH so it includes user's private bin if it exists
+# set PATH so it includes path to go if it exists
 if [ -d "/usr/local/go" ] ; then
     PATH="/usr/local/go/bin:$PATH"
+    PATH="~/go/bin:$PATH"
 fi
 
 # don't put duplicate lines or lines starting with space in the history.

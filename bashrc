@@ -24,6 +24,19 @@ esac
 # should be on the output of commands, not on the prompt
 #force_color_prompt=yes
 
+RESET="\[\017\]"
+NORMAL="\[\033[0m\]"
+WHITE="\[\033[1;37m\]"
+RED="\[\033[1;31m\]"
+YELLOW="\[\033[0;33m\]"
+BLUE="\[\033[0;34m\]"
+TURQOISE="\[\033[0;36m\]"
+SMILEY="${WHITE}:)${NORMAL}"
+FROWNY="${RED}:(${NORMAL}"
+SELECT="if [ \$? = 0 ]; then echo \"${SMILEY}\"; else echo \"${FROWNY}\"; fi"
+SMIL="\`${SELECT}\`"
+BRANCH="\$(git branch 2>/dev/null | grep "^*" | colrm 1 2)"
+
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	# We have color support; assume it's compliant with Ecma-48
@@ -36,17 +49,15 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    DEFAULT='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
 # custom shell prompt
-    DEFAULT=$PS1
-    PS1="\A \[\033[1;33m\]\u\[\033[0m\]@\[\033[1;32m\]\h\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\]\$ "
+    PS1="     ${SMIL}\n\A ${YELLOW}\w${NORMAL}:${BLUE}\u${NORMAL}@${TURQOISE}\h${NORMAL}\n${YELLOW}      └─[${RED}${BRANCH}${YELLOW}] \$${NORMAL} "
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    DEFAULT='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 
 # custom shell prompt
-    DEFAULT=$PS1
-    PS1="\A \u@\h:\w\$ "
+    PS1="\A \u@\h:\w\n      └─[${BRANCH}] \$ "
 fi
 unset color_prompt force_color_prompt
 

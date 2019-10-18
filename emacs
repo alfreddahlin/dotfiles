@@ -35,6 +35,15 @@
 
 ;; Define packages to use:
 
+;; Smartparens to better handle parenthesis and brackets
+(use-package smartparens
+  :diminish smartparens-mode
+  :config
+  (progn
+    (require 'smartparens-config)
+    (smartparens-global-mode 1)
+    (show-paren-mode t)))
+
 ;; Ace jump mode to navigate in editor
 (use-package ace-jump-mode
   :bind ("C-c SPC" . ace-jump-mode)
@@ -71,35 +80,72 @@
 (add-hook 'after-init-hook #'global-company-mode)
 
 ;; Load Go-specific language syntax
-;;For gocode use https://github.com/mdempsky/gocode
-; (use-package go-mode
-;   :init
-;   (setq gofmt-command "goimports"     ; use goimports instead of gofmt
-;         go-fontify-function-calls nil ; fontifing names of called
-;                                       ; functions is too much for me
-;         company-idle-delay nil)	; avoid auto completion popup, use TAB
-;                                 ; to show it
-;   :bind
-;   (:map go-mode-map
-;         ("C-c d" . lsp-describe-thing-at-point)
-;         ("C-c g" . godoc)
-;         ("C-c P" . my-godoc-package)
-;         ("{" . my-go-electric-brace)
-;         ("C-i" . company-indent-or-complete-common)
-;         ("C-M-i" . company-indent-or-complete-common)
-;    )
-;   :config
-;   (require 'go-guru)
-;   (add-hook 'go-mode-hook #'lsp)
-;   (add-hook 'go-mode-hook #'smartparens-mode)
-;   ;; run gofmt/goimports when saving the file
-;   (add-hook 'before-save-hook #'gofmt-before-save))
+(defun my-go-electric-brace ()
+  "Insert an opening brace may be with the closing one.
+   If there is a space before the brace also adds new line with
+   properly indented closing brace and moves cursor to another line
+   inserted between the braces between the braces."
+  (interactive)
+  (if (not (looking-back " "))
+      (insert "{")
+    (insert "{")
+    (newline)
+    (indent-according-to-mode)
+    (save-excursion
+      (newline)
+      (insert "}")
+      (indent-according-to-mode))))
 
-(use-package go-mode)
+(defun my-go-list-packages ()
+  "Return list of Go packages."
+  (split-string
+   (with-temp-buffer
+     (shell-command "go list ... 2>/dev/null" (current-buffer))
+     (buffer-substring-no-properties (point-min) (point-max)))
+   "\n"))
 
+(defun my-godoc-package ()
+  "Display godoc for given package (with completion)."
+  (interactive)
+  (godoc (helm :sources (helm-build-sync-source "Go packages"
+                          :candidates (my-go-list-packages))
+               :buffer "*godoc packages*")))
+
+(use-package go-guru
+  :defer)
+
+(use-package go-mode
+  :init
+  (setq gofmt-command "goimports"     ; use goimports instead of gofmt
+        go-fontify-function-calls nil ; fontifing names of called
+                                      ; functions is too much for me
+        company-idle-delay nil)	; avoid auto completion popup, use TAB
+                                ; to show it
+  :bind
+  (:map go-mode-map
+        ("C-c d" . lsp-describe-thing-at-point)
+        ("C-c g" . godoc)
+        ("C-c P" . my-godoc-package)
+        ("{" . my-go-electric-brace)
+        ("C-i" . company-indent-or-complete-common)
+        ("C-M-i" . company-indent-or-complete-common)
+   )
+  :config
+  (require 'go-guru)
+  (add-hook 'go-mode-hook #'lsp)
+  (add-hook 'go-mode-hook #'smartparens-mode)
+  ;; run gofmt/goimports when saving the file
+  (add-hook 'before-save-hook #'gofmt-before-save))
+
+;; Go/speedbar integration
+
+(eval-after-load 'speedbar
+  '(speedbar-add-supported-extension ".go"))
+
+;; Setup for gopls
+;; For more information see https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
 (use-package lsp-mode
   :commands (lsp lsp-deferred))
-
 (add-hook 'go-mode-hook #'lsp-deferred)
 
 ;; Provides fancier overlays
@@ -110,63 +156,7 @@
 (use-package company-lsp
   :commands company-lsp)
 
-; ;; Custom Compile Command
-; (defun go-mode-setup ()
-;   (linum-mode 1)
-;   (go-eldoc-setup)
-;   (setq gofmt-command "goimports")
-;   (add-hook 'before-save-hook 'gofmt-before-save)
-;   (local-set-key (kbd "M-.") 'godef-jump)
-;   (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
-;   (setq compilation-read-command nil)
-;   ;;  (define-key (current-local-map) "\C-c\C-c" 'compile)
-;   (local-set-key (kbd "M-,") 'compile))
-; (add-hook 'go-mode-hook 'go-mode-setup)
-
-; ;;Load auto-complete
-; (ac-config-default)
-; (require 'auto-complete-config)
-; (require 'go-autocomplete)
-
-; ;;Go rename
-
-; (require 'go-rename)
-
-; ;;Configure golint
-; (add-to-list 'load-path (concat (getenv "GOPATH")  "/src/github.com/golang/lint/misc/emacs"))
-; (require 'golint)
-
-; ;;Smaller compilation buffer
-; (setq compilation-window-height 14)
-; (defun my-compilation-hook ()
-;   (when (not (get-buffer-window "*compilation*"))
-;     (save-selected-window
-;       (save-excursion
-;         (let* ((w (split-window-vertically))
-;                (h (window-height w)))
-;           (select-window w)
-;           (switch-to-buffer "*compilation*")
-;           (shrink-window (- h compilation-window-height)))))))
-; (add-hook 'compilation-mode-hook 'my-compilation-hook)
-
-; ;;Other Key bindings
-; (global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region)
-
-; ;;Compilation autoscroll
-; (setq compilation-scroll-output t)
-
-;; For starting emacs as a server
-;(server-start)
-
-;(global-set-key (kbd "C-z")       'undo)
-(define-key global-map "\C-r"     'isearch-backward-regexp)
-(define-key global-map "\C-s"     'isearch-forward-regexp)
-(define-key global-map "\M-%"     'query-replace-regexp)
-;(setq select-enable-primary t)
-;(setq select-enable-clipboard nil)
-;(setq mouse-drag-copy-region t)
-;(setq select-enable-clipboard t)
-;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+;; ------------- General Emacs settings -------------------------------------------------
 
 (delete-selection-mode 1)
 
@@ -192,8 +182,7 @@
 (set-input-mode nil nil 1)
 (set-language-environment 'Latin-1)
 
-;; Make cursor stay at the end of the buffer
-;; instead of adding newlines
+;; Make cursor stay at the end of the buffer instead of adding newlines
 (setq-default next-line-add-newlines nil
               indent-tabs-mode nil)
 
