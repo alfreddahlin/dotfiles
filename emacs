@@ -111,16 +111,19 @@
                           :candidates (my-go-list-packages))
                :buffer "*godoc packages*")))
 
-(use-package go-guru
-  :defer)
+(use-package go-guru)
+
+(use-package yasnippet)
 
 (use-package go-mode
   :init
   (setq gofmt-command "goimports"     ; use goimports instead of gofmt
         go-fontify-function-calls nil ; fontifing names of called
                                       ; functions is too much for me
-        company-idle-delay nil)	; avoid auto completion popup, use TAB
-                                ; to show it
+        company-idle-delay nil ; avoid auto completion popup, use TAB
+                               ; to show it
+        tab-width 4 ; set indent to 4 characters
+        indent-tabs-mode nil) ; use spaces for indents
   :bind
   (:map go-mode-map
         ("C-c d" . lsp-describe-thing-at-point)
@@ -132,6 +135,7 @@
    )
   :config
   (require 'go-guru)
+  (require 'yasnippet)
   (add-hook 'go-mode-hook #'lsp)
   (add-hook 'go-mode-hook #'smartparens-mode)
   ;; run gofmt/goimports when saving the file
@@ -163,6 +167,8 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+(setq split-width-threshold 0)
+(setq split-height-threshold nil)
 
 ;; Enable as much font locking as possible
 (global-font-lock-mode 1)
@@ -182,9 +188,10 @@
 (set-input-mode nil nil 1)
 (set-language-environment 'Latin-1)
 
-;; Make cursor stay at the end of the buffer instead of adding newlines
+;; Make cursor stay at the end of the buffer instead of adding newlines and set tab defaults
 (setq-default next-line-add-newlines nil
-              indent-tabs-mode nil)
+              indent-tabs-mode nil
+              tab-width 4)
 
 (setq-default c-default-style "k&r"
               c-basic-offset 4)
@@ -232,7 +239,7 @@
  '(custom-safe-themes
    (quote
     ("e2a42f0ee660f30851428ab328de50d0739adf08f732a5cb7a73b1395fee24a5" default)))
- '(package-selected-packages (quote (spinner company flycheck))))
+ '(package-selected-packages (quote (yasnippet spinner company flycheck))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
