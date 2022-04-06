@@ -3,3 +3,5 @@
 	name = Alfred Dahlin
 [alias]
 	dog = log --all --decorate --oneline --graph
+[credential]
+	helper = store

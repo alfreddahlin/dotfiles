@@ -35,14 +35,14 @@
 
 ;; Define packages to use:
 
-;; Smartparens to better handle parenthesis and brackets
-(use-package smartparens
-  :diminish smartparens-mode
-  :config
-  (progn
-    (require 'smartparens-config)
-    (smartparens-global-mode 1)
-    (show-paren-mode t)))
+; ;; Smartparens to better handle parenthesis and brackets
+; (use-package smartparens
+;   :diminish smartparens-mode
+;   :config
+;   (progn
+;     (require 'smartparens-config)
+;     (smartparens-global-mode 1)
+;     (show-paren-mode t)))
 
 ;; Ace jump mode to navigate in editor
 (use-package ace-jump-mode
