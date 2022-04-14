@@ -34,9 +34,6 @@ echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.clou
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 sudo apt-get update && sudo apt-get install google-cloud-cli
 gcloud init
-# Python keyring for authenticating environment (will need config files)
-pip install keyring
-pip install keyrings.google-artifactregistry-auth
 
 # Postgres
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
@@ -61,3 +58,13 @@ sudo apt-get install yarn -y
 
 # Node
 # use nvm for this
+
+
+
+# ----- Per project setup -----
+# -----------------------------
+# Python keyring for authenticating environment (will need config files)
+pip install keyring
+pip install keyrings.google-artifactregistry-auth
+#pyenv install 3.10.4
+#pyenv virtualenv 3.10.4 latest
