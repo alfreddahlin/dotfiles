@@ -25,6 +25,7 @@ git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/py
 exec "$SHELL"
 #pyenv install 3.10.4
 #pyenv virtualenv 3.10.4 latest
+# ADD ZSH FILES TO DOTFILES REPO: .zprofile and .zshrc
 
 # Installing Google CLI
 sudo rm /etc/apt/sources.list.d/google-cloud-sdk.list # If error reading list
@@ -49,3 +50,14 @@ ALTER ROLE jead CREATEDB;
 # General good to have dependencies (broken dependencies)
 pip install wheel
 sudo apt-get install --reinstall libpq-dev
+
+
+# Yarn
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update
+sudo apt-get install yarn -y
+
+
+# Node
+# use nvm for this
